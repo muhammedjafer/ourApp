@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -31,3 +32,8 @@ Route::get('/profile/{user:username}', [UserController::class, 'profile']);
 Route::delete('/post/{post}', [PostController::class, 'deletePost'])->middleware('can:delete,post');
 Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middleware('can:update,post');
 Route::put('/post/{post}', [PostController::class, 'editPost'])->middleware('can:update,post');
+
+//admin page routes
+Route::get('/admin-only', function () {
+        return 'this is the admin page';
+})->middleware('can:onlyAdminCanCome');
