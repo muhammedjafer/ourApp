@@ -5,9 +5,45 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function showAvatarForm()
+    {
+        return view('avatar-form');
+    }
+
+    public function storeAvatar(Request $request)
+    {
+        //->store('public/avatars'.$request->id);
+        $request->validate([
+            'avatar' => 'required|image|max:2048',
+        ]);
+        $input = $request->file('avatar');
+        $user = auth()->user();
+        $fileName = $user->id . '-' . uniqid() . '.jpg';
+        $imgData = Image::make($input)->fit(120)->encode('jpg');
+        //$imgData->storeAs('public/avatars/', $fileName);\
+        Storage::put('public/avatars' . $fileName, $imgData);
+
+        $oldAvatar = $user->avatar;
+
+        $user = User::find($user->id);
+        if ($oldAvatar)
+        {
+            Storage::delete('public/avatars' . $oldAvatar);
+            $user->avatar = $fileName;
+        } else {
+            $user->avatar = $fileName;
+        }
+
+        $user->save();
+        //return view('profile-posts');
+    }
+
     public function profile(User $user)
     {
         return view('profile-posts', [
