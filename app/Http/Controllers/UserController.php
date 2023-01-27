@@ -27,14 +27,14 @@ class UserController extends Controller
         $fileName = $user->id . '-' . uniqid() . '.jpg';
         $imgData = Image::make($input)->fit(120)->encode('jpg');
         //$imgData->storeAs('public/avatars/', $fileName);\
-        Storage::put('public/avatars' . $fileName, $imgData);
+        Storage::put('public/avatars/' . $fileName,  $imgData);
 
         $oldAvatar = $user->avatar;
 
         $user = User::find($user->id);
         if ($oldAvatar)
         {
-            Storage::delete('public/avatars' . $oldAvatar);
+            Storage::delete('public/avatars/' . $oldAvatar);
             $user->avatar = $fileName;
         } else {
             $user->avatar = $fileName;
