@@ -32,15 +32,17 @@ class UserController extends Controller
         $oldAvatar = $user->avatar;
 
         $user = User::find($user->id);
-        if ($oldAvatar)
+        if ($oldAvatar != '/fallback-avatar.jpg')
         {
-            Storage::delete('public/avatars/' . $oldAvatar);
+            Storage::delete(str_replace("/storage/", 'public/', $oldAvatar));
             $user->avatar = $fileName;
         } else {
             $user->avatar = $fileName;
         }
 
         $user->save();
+
+        return back()->with('success','Image changed successfully');
         //return view('profile-posts');
     }
 

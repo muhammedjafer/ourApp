@@ -28,12 +28,12 @@ Route::post('/manage-avatar', [UserController::class, 'storeAvatar'])->middlewar
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');
 Route::post('/create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{post}', [PostController::class, 'viewSinglePost']);
+Route::delete('/post/{post}', [PostController::class, 'deletePost'])->middleware('can:delete,post');
+Route::put('/post/{post}', [PostController::class, 'editPost'])->middleware('can:update,post');
 
 //profile related routes
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
-Route::delete('/post/{post}', [PostController::class, 'deletePost'])->middleware('can:delete,post');
 Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middleware('can:update,post');
-Route::put('/post/{post}', [PostController::class, 'editPost'])->middleware('can:update,post');
 
 //admin page routes
 Route::get('/admin-only', function () {
