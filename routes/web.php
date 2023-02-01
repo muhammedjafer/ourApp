@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,12 @@ Route::post('/create-post', [PostController::class, 'storeNewPost'])->middleware
 Route::get('/post/{post}', [PostController::class, 'viewSinglePost']);
 Route::delete('/post/{post}', [PostController::class, 'deletePost'])->middleware('can:delete,post');
 Route::put('/post/{post}', [PostController::class, 'editPost'])->middleware('can:update,post');
+
+//follow related routes
+Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])
+->middleware('mustBeLoggedIn');;
+Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])
+->middleware('mustBeLoggedIn');;
 
 //profile related routes
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
