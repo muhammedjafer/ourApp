@@ -59,14 +59,14 @@ class UserController extends Controller
     {
         $this->getSharedData($user);
         return view('profile-followers', [
-            'posts' => $user->posts()->latest()->get()]);
+            'followers' => $user->followers()->latest()->get()]);
     }
 
     public function profileFollowing(User $user)
     {
         $this->getSharedData($user);
         return view('profile-following', [
-            'posts' => $user->posts()->latest()->get()]);
+            'following' => $user->followingTheseUsers()->latest()->get()]);
     }
 
     public function logout() {
@@ -126,6 +126,8 @@ class UserController extends Controller
         View::share('sharedData', [
             'username' => $user->username, 
             'postCount' => $user->posts()->count(),
+            'followerCount' => $user->followers()->count(),
+            'followingCount' => $user->followingTheseUsers()->count(),
             'currentlyFollowing' => $currentlyFollowing]);
     }
 }
