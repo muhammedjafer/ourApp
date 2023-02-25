@@ -7,6 +7,7 @@ use App\Models\Follow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\View;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
@@ -49,21 +50,23 @@ class UserController extends Controller
 
     public function profile(User $user)
     {
-
-        $currentlyFollowing = 0;
-
-        if (auth()->check())
-        {
-            $currentlyFollowing = Follow::where([
-            'user_id' => auth()->user()->id,
-            'followeduser' => $user->id])->count();
-        }
-
+        $this->getSharedData($user);
         return view('profile-posts', [
-        'username' => $user->username, 
-        'postCount' => $user->posts()->count(), 
-        'posts' => $user->posts()->latest()->get(),
-        'currentlyFollowing' => $currentlyFollowing]);
+        'posts' => $user->posts()->latest()->get()]);
+    }
+
+    public function profileFollowers(User $user)
+    {
+        $this->getSharedData($user);
+        return view('profile-followers', [
+            'posts' => $user->posts()->latest()->get()]);
+    }
+
+    public function profileFollowing(User $user)
+    {
+        $this->getSharedData($user);
+        return view('profile-following', [
+            'posts' => $user->posts()->latest()->get()]);
     }
 
     public function logout() {
@@ -107,5 +110,22 @@ class UserController extends Controller
         $user = User::create($incomingFields);
         auth()->login($user);
         return redirect('/')->with('success', 'Thank you for creating an account.');
+    }
+
+    private function getSharedData($user) 
+    {
+        $currentlyFollowing = 0;
+
+        if (auth()->check())
+        {
+            $currentlyFollowing = Follow::where([
+            'user_id' => auth()->user()->id,
+            'followeduser' => $user->id])->count();
+        }
+
+        View::share('sharedData', [
+            'username' => $user->username, 
+            'postCount' => $user->posts()->count(),
+            'currentlyFollowing' => $currentlyFollowing]);
     }
 }
