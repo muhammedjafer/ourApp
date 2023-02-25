@@ -40,6 +40,8 @@ Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeF
 
 //profile related routes
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
+Route::get('/profile/{user:username}/followers', [UserController::class, 'profileFollowers']);
+Route::get('/profile/{user:username}/following', [UserController::class, 'profileFollowing']);
 Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middleware('can:update,post');
 
 //admin page routes
