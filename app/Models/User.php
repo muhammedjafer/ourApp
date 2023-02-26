@@ -63,7 +63,7 @@ class User extends Authenticatable
         return $this->hasMany(Follow::class, 'followeduser');
     }
 
-    // This will return whom th user that are following the user
+    // This will return whom the user that are following the user
     public function followingTheseUsers()
     {
         return $this->hasMany(Follow::class, 'user_id');
