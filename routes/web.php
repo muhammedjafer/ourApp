@@ -34,9 +34,9 @@ Route::put('/post/{post}', [PostController::class, 'editPost'])->middleware('can
 
 //follow related routes
 Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])
-->middleware('mustBeLoggedIn');;
+->middleware('mustBeLoggedIn');
 Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])
-->middleware('mustBeLoggedIn');;
+->middleware('mustBeLoggedIn');
 
 //profile related routes
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
