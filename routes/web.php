@@ -48,3 +48,6 @@ Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middle
 Route::get('/admin-only', function () {
         return 'this is the admin page';
 })->middleware('can:onlyAdminCanCome');
+
+//Route for search
+Route::get('/search/{term}', [PostController::class, 'search']);
