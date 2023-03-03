@@ -20,5 +20,5 @@
 
         <button class="btn btn-primary">Save New Post</button>
       </form>
-    </div>
+    </div> 
 </x-layout>
