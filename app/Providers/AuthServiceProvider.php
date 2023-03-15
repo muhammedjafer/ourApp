@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        //$this->registerPolicies();
 
         Gate::define('onlyAdminCanCome', function (User $user) {
             return $user->isAdmin === 1;
